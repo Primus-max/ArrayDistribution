@@ -26,6 +26,12 @@ void ClearMemory(T* arr);
 template<typename T>
 T* NegativeNumbers(T* arr, int oldSize, int& newSize);
 
+template<typename T>
+T* PositiveNumbers(T* arr, int oldSize, int& newSize);
+
+template<typename T>
+T* ZeroNumbers(T* arr, int oldSize, int& newSize);
+
 int main()
 {
 	SetConsoleCP(1251);
@@ -39,8 +45,19 @@ int main()
 
 	int newSize;
 	cout << "Массив отрицательных чисел " << endl;
-	int* negativNumb = NegativeNumbers(ArraySrc, size, newSize);
-	PrintArray(negativNumb, newSize);
+	int* negativeNumb = NegativeNumbers(ArraySrc, size, newSize);
+	PrintArray(negativeNumb, newSize);
+	ClearMemory(negativeNumb);
+
+	cout << "Массив положительных чисел " << endl;
+	int* positiveNumb = PositiveNumbers(ArraySrc, size, newSize);
+	PrintArray(positiveNumb, newSize);
+	ClearMemory(positiveNumb);
+
+	cout << "Массив нулевых чисел " << endl;
+	int* zeroNumb = ZeroNumbers(ArraySrc, size, newSize);
+	PrintArray(zeroNumb, newSize);
+	ClearMemory(zeroNumb);
 	
 }
 
@@ -69,7 +86,6 @@ T* AllocateMemory(T size) {
 template<typename T>
 void ClearMemory(T* arr) { delete[] arr; };
 
-
 template<typename T>
 T* NegativeNumbers(T* arr, int oldSize, int& newSize) {
 	if (arr == nullptr)
@@ -88,6 +104,54 @@ T* NegativeNumbers(T* arr, int oldSize, int& newSize) {
 	T* j = newArr;
 	for (T* i = arr; i < arr + oldSize; ++i) {
 		if (*i < 0)
+			*j++ = *i;
+	}
+
+	return newArr;
+}
+
+template<typename T>
+T* PositiveNumbers(T* arr, int oldSize, int& newSize) {
+	if (arr == nullptr)
+		return nullptr;
+
+	newSize = 0;
+
+	for (T* i = arr; i < arr + oldSize; i++)
+		if (*i < 0) ++newSize;
+
+
+	T* newArr = AllocateMemory<T>(newSize);
+	if (newArr == nullptr)
+		return nullptr;
+
+	T* j = newArr;
+	for (T* i = arr; i < arr + oldSize; ++i) {
+		if (*i > 0)
+			*j++ = *i;
+	}
+
+	return newArr;
+}
+
+template<typename T>
+T* ZeroNumbers(T* arr, int oldSize, int& newSize) {
+	if (arr == nullptr)
+		return nullptr;
+
+	newSize = 0;
+
+	for (T* i = arr; i < arr + oldSize; i++)
+		if (*i == 0) ++newSize;
+
+
+	T* newArr = AllocateMemory<T>(newSize);
+	if (newArr == nullptr)
+		return nullptr;
+
+	T* j = newArr;
+	for (T* i = arr; i < arr + oldSize; ++i) {
+		if (*i == 0)
 			*j++ = *i;
 	}
 
